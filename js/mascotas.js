@@ -7,7 +7,6 @@ const form = document.getElementById('form');
 const btnGuardar = document.getElementById('guardar');
 const indice = document.getElementById('indice');
 
-
 let mascotas = [
     {
         tipo: "Gato",
@@ -43,14 +42,39 @@ function enviarDatos(e) {
         nombre: inputNombre.value,
         propietario: inputPropietario.value
     };
-    mascotas.push(datos);
+    const action = btnGuardar.innerHTML;
+    switch(action) {
+        case 'Editar':
+            mascotas[indice.value] = datos;
+        break;
+        default:
+            mascotas.push(datos);
+        break;
+    }
+    
     listarMascotas();
+    resetModal();
 }
 
-function editar(indice) {
+function editar(index) {
     return function handler() {
-        console.log(indice);
+        btnGuardar.innerText = 'Editar';
+        const myModal = new bootstrap.Modal(document.getElementById('exampleModal'), keyboard = true);
+        myModal.toggle();
+        const mascota = mascotas[index];
+        selectTipo.value = mascota.tipo;
+        inputNombre.value = mascota.nombre;
+        inputPropietario.value = mascota.propietario;
+        indice.value = index;
     }
+}
+
+function resetModal() {
+    selectTipo.value = '';
+        inputNombre.value = '';
+        inputPropietario.value = '';
+        indice.value = '';
+        btnGuardar.innerHTML = 'Crear';
 }
 
 listarMascotas();
